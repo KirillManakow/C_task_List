@@ -1,6 +1,6 @@
-﻿#include <malloc.h>
+#include <malloc.h>
 #include <stdio.h>
-
+#define N 10
 struct list
 {
 	int a;
@@ -13,12 +13,12 @@ typedef struct list* LOS;
 
 LOS create(int n)
 {
-	LOS los = calloc(1, sizeof(LOS));
+	LOS los = calloc(1, sizeof(los));
 	LOS p1 = los, p2;
 	p1->a = 1;
 	for (size_t i = 0; i < n-1; i++)
 	{
-		p2 = calloc(1, sizeof(LOS));
+		p2 = calloc(1, sizeof(los));
 		p1->next = p2;
 		p2->a = p1->a + 1;
 		p1 = p2;
@@ -38,19 +38,7 @@ void Print_Los(LOS los)
 }
 
 
-
-void Delete_Los(LOS los, unsigned  n)
-{
-	LOS i;
-	while (los)
-	{
-		i = los->next;
-		los = i;
-	}
-}
-
-
-void Delete_element(LOS los, unsigned k)
+LOS Delete_element(LOS los, unsigned k)
 {
 	for (size_t i = 0; i < k-2; i++)
 	{
@@ -58,25 +46,46 @@ void Delete_element(LOS los, unsigned k)
 	}
 	LOS p1 = los;
 	los->next = los->next->next;
-	/*free(p1);*/
+
+	//free(p1);
 }
 
-void Swap_element(LOS los, unsigned k, const int index1, const int index2)
+void Swap_element(LOS los, int a, int m)
 {
-	// найти элемент #1
-	los	* element1 = Head;
-	for (int i = 0; i < k; i++)
-		element1 = element1->Next;
-
-	// найти элемент #2
-	element* element2 = Head;
-	for (int i = 0; i < k; i++)
-		element2 = element2->Next;
-
-	// поменять местами значения найденных элементов
-	const int tmp element2->x;
-	element1->x = element2->x;
-	element2->x = tmp;
+	LOS min = los;
+	LOS max = los;
+	LOS _max = los;
+	if (a != 0) {
+		for (size_t n = 0; n < a - 2; n++)
+		{
+			min = min->next;
+		}
+		for (size_t n = 0; n < m - 2; n++)
+		{
+			_max = _max->next;
+		}
+		LOS l2 = _max->next;
+		max = l2->next;
+		LOS l1 = min->next;
+		min->next = l2;
+		_max->next = l1;
+		l2->next = l1->next;
+		l1->next = max;
+		return los;
+	}
+	else {
+		for (size_t n = 0; n < m - 2; n++)
+		{
+			_max = _max->next;
+		}
+		LOS l2 = _max->next;
+		max = l2->next;
+		LOS l1 = min->next;
+		l2->next = l1;
+		_max->next = min;
+		min->next = max;
+		return l2;
+	}
 }
 
 void Insert_Into_LOS(LOS los,LOS item, int k)
@@ -92,12 +101,9 @@ void Insert_Into_LOS(LOS los,LOS item, int k)
 
 int main()
 {
+	system("chcp 1251 >null");
 	LOS los = create(10);
 	Print_Los(los);
-
-	Delete_element(los,5);
-	Print_Los(los);
-	free(los);
 
 	LOS item = calloc(1, sizeof(LOS));
 	item->a = 20;
@@ -105,7 +111,16 @@ int main()
 	Insert_Into_LOS(los, item, 3);
 	Print_Los(los);
 
-	//Delete_Los(los, 2);
-	//Print_Los(los);
+	printf("Списка нет");
+	Print_Los(Delete_element(los, N));
+
+	Delete_element(los,5);
+	Print_Los(los);
+	//free(los);
+
+	Swap_element(los, 4, 2);
+	Print_Los(los);
+	Print_Los(los);
+	
 	return 0;
 }
