@@ -138,5 +138,5 @@ int main()
 
 	//printf("Списка нет");
 	//Print_Los(Delete_element(los, N ));
-	return 0;
+	return 0; 
 }
