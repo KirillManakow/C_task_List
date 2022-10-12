@@ -1,7 +1,7 @@
 #include <malloc.h>
 #include <stdio.h>
-#define N 10
-struct list
+
+ struct list
 {
 	int a;
 	struct list* next;
@@ -16,6 +16,7 @@ LOS create(int n)
 	LOS los = calloc(1, sizeof(los));
 	LOS p1 = los, p2;
 	p1->a = 1;
+	los->next = NULL;
 	for (size_t i = 0; i < n-1; i++)
 	{
 		p2 = calloc(1, sizeof(los));
@@ -50,7 +51,7 @@ LOS Delete_element(LOS los, unsigned k)
 	//free(p1);
 }
 
-void Swap_element(LOS los, int a, int m)
+void Swap_element(LOS los,int a, int m)
 {
 	LOS min = los;
 	LOS max = los;
@@ -86,17 +87,34 @@ void Swap_element(LOS los, int a, int m)
 		min->next = max;
 		return l2;
 	}
-}
-
-void Insert_Into_LOS(LOS los,LOS item, int k)
-{
+}	
 	
-	for (size_t i = 1; i < k-1; i++)
+
+LOS Insert_Into_LOS(LOS los, LOS item, int k)
+{
+	LOS el = malloc(sizeof(LOS));
+	el->a = item->next;
+	if (k == 1)
 	{
-		los = los->next;
+		el->next = los;
+		los = el;
 	}
-	item->next = los->next;
-	los->next = item;
+	else
+	{
+		for (size_t i = 1; i < k-1; i++)
+		{
+			los = los->next;
+			if (!(los->next))
+			{
+				printf("Превышен размер");
+				break;
+			}
+		}
+		void* temp = los->next;
+		los->next = el;
+		el->next = temp;
+	}
+	return los;
 }
 
 int main()
@@ -105,22 +123,20 @@ int main()
 	LOS los = create(10);
 	Print_Los(los);
 
-	LOS item = calloc(1, sizeof(LOS));
-	item->a = 20;
-	item->next = 0;
-	Insert_Into_LOS(los, item, 3);
+	LOS item = malloc(1, sizeof(LOS));
+	item->next= 18,NULL;
+	los = Insert_Into_LOS(los, item, 1);
 	Print_Los(los);
-
-	printf("Списка нет");
-	Print_Los(Delete_element(los, N));
 
 	Delete_element(los,5);
 	Print_Los(los);
 	//free(los);
 
-	Swap_element(los, 4, 2);
+	LOS item1 = malloc(1, sizeof(LOS));
+	Swap_element(los, 1,2);
 	Print_Los(los);
-	Print_Los(los);
-	
+
+	//printf("Списка нет");
+	//Print_Los(Delete_element(los, N ));
 	return 0;
 }
